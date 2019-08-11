@@ -33,16 +33,36 @@ image enhancement filters:
 * **EDGE_ENHANCE_MORE**
 * **EMBOSS**
 * **FIND_EDGES**
+* **SHARPEN**
 * **SMOOTH**
 * **SMOOTH_MORE**
-* **SHARPEN**
+
+.. autoclass:: PIL.ImageFilter.Color3DLUT
+    :members:
+
+.. autoclass:: PIL.ImageFilter.BoxBlur
+    :members:
 
 .. autoclass:: PIL.ImageFilter.GaussianBlur
-.. autoclass:: PIL.ImageFilter.BoxBlur
+    :members:
+
 .. autoclass:: PIL.ImageFilter.UnsharpMask
+    :members:
+
 .. autoclass:: PIL.ImageFilter.Kernel
+    :members:
+
 .. autoclass:: PIL.ImageFilter.RankFilter
+    :members:
+
 .. autoclass:: PIL.ImageFilter.MedianFilter
+    :members:
+
 .. autoclass:: PIL.ImageFilter.MinFilter
+    :members:
+
 .. autoclass:: PIL.ImageFilter.MaxFilter
+    :members:
+
 .. autoclass:: PIL.ImageFilter.ModeFilter
+    :members:

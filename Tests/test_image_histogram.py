@@ -1,10 +1,8 @@
-from helper import unittest, PillowTestCase, hopper
+from .helper import PillowTestCase, hopper
 
 
 class TestImageHistogram(PillowTestCase):
-
     def test_histogram(self):
-
         def histogram(mode):
             h = hopper(mode).histogram()
             return len(h), min(h), max(h)
@@ -18,7 +16,3 @@ class TestImageHistogram(PillowTestCase):
         self.assertEqual(histogram("RGBA"), (1024, 0, 16384))
         self.assertEqual(histogram("CMYK"), (1024, 0, 16384))
         self.assertEqual(histogram("YCbCr"), (768, 0, 1908))
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -1,12 +1,11 @@
-from helper import unittest, PillowTestCase, hopper
-
 from PIL import BufrStubImagePlugin, Image
+
+from .helper import PillowTestCase, hopper
 
 TEST_FILE = "Tests/images/gfs.t06z.rassda.tm00.bufr_d"
 
 
 class TestFileBufrStub(PillowTestCase):
-
     def test_open(self):
         # Act
         im = Image.open(TEST_FILE)
@@ -23,8 +22,9 @@ class TestFileBufrStub(PillowTestCase):
         invalid_file = "Tests/images/flower.jpg"
 
         # Act / Assert
-        self.assertRaises(SyntaxError,
-                          BufrStubImagePlugin.BufrStubImageFile, invalid_file)
+        self.assertRaises(
+            SyntaxError, BufrStubImagePlugin.BufrStubImageFile, invalid_file
+        )
 
     def test_load(self):
         # Arrange
@@ -40,7 +40,3 @@ class TestFileBufrStub(PillowTestCase):
 
         # Act / Assert: stub cannot save without an implemented handler
         self.assertRaises(IOError, im.save, tmpfile)
-
-
-if __name__ == '__main__':
-    unittest.main()

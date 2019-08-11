@@ -1,26 +1,24 @@
-from helper import unittest, PillowTestCase
-from helper import djpeg_available, cjpeg_available, netpbm_available
-
-import sys
 import shutil
+import sys
 
-from PIL import Image, JpegImagePlugin, GifImagePlugin
+from PIL import GifImagePlugin, Image, JpegImagePlugin
+
+from .helper import (
+    PillowTestCase,
+    cjpeg_available,
+    djpeg_available,
+    netpbm_available,
+    unittest,
+)
 
 TEST_JPG = "Tests/images/hopper.jpg"
 TEST_GIF = "Tests/images/hopper.gif"
 
-test_filenames = (
-    "temp_';",
-    "temp_\";",
-    "temp_'\"|",
-    "temp_'\"||",
-    "temp_'\"&&",
-)
+test_filenames = ("temp_';", 'temp_";', "temp_'\"|", "temp_'\"||", "temp_'\"&&")
 
 
-@unittest.skipIf(sys.platform.startswith('win32'), "requires Unix or MacOS")
+@unittest.skipIf(sys.platform.startswith("win32"), "requires Unix or macOS")
 class TestShellInjection(PillowTestCase):
-
     def assert_save_filename_check(self, src_img, save_func):
         for filename in test_filenames:
             dest_file = self.tempfile(filename)
@@ -51,7 +49,3 @@ class TestShellInjection(PillowTestCase):
     def test_save_netpbm_filename_l_mode(self):
         im = Image.open(TEST_GIF).convert("L")
         self.assert_save_filename_check(im, GifImagePlugin._save_netpbm)
-
-
-if __name__ == '__main__':
-    unittest.main()

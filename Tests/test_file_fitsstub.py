@@ -1,12 +1,11 @@
-from helper import unittest, PillowTestCase
-
 from PIL import FitsStubImagePlugin, Image
+
+from .helper import PillowTestCase
 
 TEST_FILE = "Tests/images/hopper.fits"
 
 
 class TestFileFitsStub(PillowTestCase):
-
     def test_open(self):
         # Act
         im = Image.open(TEST_FILE)
@@ -23,8 +22,9 @@ class TestFileFitsStub(PillowTestCase):
         invalid_file = "Tests/images/flower.jpg"
 
         # Act / Assert
-        self.assertRaises(SyntaxError,
-                          FitsStubImagePlugin.FITSStubImageFile, invalid_file)
+        self.assertRaises(
+            SyntaxError, FitsStubImagePlugin.FITSStubImageFile, invalid_file
+        )
 
     def test_load(self):
         # Arrange
@@ -42,9 +42,5 @@ class TestFileFitsStub(PillowTestCase):
         # Act / Assert: stub cannot save without an implemented handler
         self.assertRaises(IOError, im.save, dummy_filename)
         self.assertRaises(
-            IOError,
-            FitsStubImagePlugin._save, im, dummy_fp, dummy_filename)
-
-
-if __name__ == '__main__':
-    unittest.main()
+            IOError, FitsStubImagePlugin._save, im, dummy_fp, dummy_filename
+        )

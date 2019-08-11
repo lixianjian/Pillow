@@ -1,10 +1,9 @@
-from helper import unittest, PillowTestCase, hopper
-
 from PIL import Image
+
+from .helper import PillowTestCase, hopper
 
 
 class TestImageGetBbox(PillowTestCase):
-
     def test_sanity(self):
 
         bbox = hopper().getbbox()
@@ -37,7 +36,3 @@ class TestImageGetBbox(PillowTestCase):
 
         im.paste(255, (-10, -10, 110, 110))
         self.assertEqual(im.getbbox(), (0, 0, 100, 100))
-
-
-if __name__ == '__main__':
-    unittest.main()

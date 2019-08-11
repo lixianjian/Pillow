@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 from PIL import Image
 
 
@@ -7,8 +8,10 @@ def version(module, version):
     if v:
         print(version, v)
 
+
 version(Image, "jpeglib")
 version(Image, "zlib")
+version(Image, "libtiff")
 
 try:
     from PIL import ImageFont

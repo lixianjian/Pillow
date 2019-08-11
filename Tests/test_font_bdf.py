@@ -1,12 +1,11 @@
-from helper import unittest, PillowTestCase
+from PIL import BdfFontFile, FontFile
 
-from PIL import FontFile, BdfFontFile
+from .helper import PillowTestCase
 
 filename = "Tests/images/courB08.bdf"
 
 
 class TestFontBdf(PillowTestCase):
-
     def test_sanity(self):
 
         with open(filename, "rb") as test_file:
@@ -18,7 +17,3 @@ class TestFontBdf(PillowTestCase):
     def test_invalid_file(self):
         with open("Tests/images/flower.jpg", "rb") as fp:
             self.assertRaises(SyntaxError, BdfFontFile.BdfFontFile, fp)
-
-
-if __name__ == '__main__':
-    unittest.main()

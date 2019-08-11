@@ -69,7 +69,7 @@ true color.
             header = string.split(header)
 
             # size in pixels (width, height)
-            self.size = int(header[1]), int(header[2])
+            self._size = int(header[1]), int(header[2])
 
             # mode setting
             bits = int(header[3])
@@ -171,7 +171,6 @@ The fields are used as follows:
     stride defaults to 0.
 
 **orientation**
-
     Whether the first line in the image is the top line on the screen (1), or
     the bottom line (-1). If omitted, the orientation defaults to 1.
 
@@ -202,9 +201,10 @@ table describes some commonly used **raw modes**:
 +-----------+-----------------------------------------------------------------+
 | ``BGR``   | 24-bit true colour, stored as (blue, green, red).               |
 +-----------+-----------------------------------------------------------------+
-| ``RGBX``  | 24-bit true colour, stored as (red, green, blue, pad).          |
+| ``RGBX``  | 24-bit true colour, stored as (red, green, blue, pad). The pad  |
+|           | pixels may vary.                                                |
 +-----------+-----------------------------------------------------------------+
-| ``RGB;L`` | 24-bit true colour, line interleaved (first all red pixels, the |
+| ``RGB;L`` | 24-bit true colour, line interleaved (first all red pixels, then|
 |           | all green pixels, finally all blue pixels).                     |
 +-----------+-----------------------------------------------------------------+
 
@@ -256,9 +256,10 @@ If the raw decoder cannot handle your format, PIL also provides a special “bit
 decoder that can be used to read various packed formats into a floating point
 image memory.
 
-To use the bit decoder with the frombytes function, use the following syntax::
+To use the bit decoder with the :py:func:`PIL.Image.frombytes` function, use
+the following syntax::
 
-    image = frombytes(
+    image = Image.frombytes(
         mode, size, data, "bit",
         bits, pad, fill, sign, orientation
         )

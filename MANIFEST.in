@@ -1,4 +1,3 @@
-
 include *.c
 include *.h
 include *.in
@@ -9,26 +8,22 @@ include *.sh
 include *.txt
 include LICENSE
 include Makefile
-graft Scripts
+include tox.ini
 graft Tests
-graft PIL
-graft Tk
-graft libImaging
+graft src
 graft depends
 graft winbuild
 graft docs
-prune docs/_static
 
 # build/src control detritus
+exclude .appveyor.yml
 exclude .coveragerc
-exclude codecov.yml
+exclude .codecov.yml
 exclude .editorconfig
-exclude .landscape.yaml
-exclude .travis
-exclude .travis/*
-exclude appveyor.yml
-exclude build_children.sh
-exclude tox.ini
+exclude .readthedocs.yml
+exclude azure-pipelines.yml
 global-exclude .git*
 global-exclude *.pyc
 global-exclude *.so
+prune .azure-pipelines
+prune .travis

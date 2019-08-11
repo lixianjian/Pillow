@@ -1,6 +1,6 @@
-from helper import unittest, PillowTestCase
+from PIL import FliImagePlugin, Image
 
-from PIL import Image, FliImagePlugin
+from .helper import PillowTestCase
 
 # created as an export of a palette image from Gimp2.6
 # save as...-> hopper.fli, default options.
@@ -11,7 +11,6 @@ animated_test_file = "Tests/images/a.fli"
 
 
 class TestFileFli(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(static_test_file)
         im.load()
@@ -27,6 +26,13 @@ class TestFileFli(PillowTestCase):
         self.assertEqual(im.info["duration"], 71)
         self.assertTrue(im.is_animated)
 
+    def test_unclosed_file(self):
+        def open():
+            im = Image.open(static_test_file)
+            im.load()
+
+        self.assert_warning(None, open)
+
     def test_tell(self):
         # Arrange
         im = Image.open(static_test_file)
@@ -40,8 +46,7 @@ class TestFileFli(PillowTestCase):
     def test_invalid_file(self):
         invalid_file = "Tests/images/flower.jpg"
 
-        self.assertRaises(SyntaxError,
-                          FliImagePlugin.FliImageFile, invalid_file)
+        self.assertRaises(SyntaxError, FliImagePlugin.FliImageFile, invalid_file)
 
     def test_n_frames(self):
         im = Image.open(static_test_file)
@@ -61,7 +66,7 @@ class TestFileFli(PillowTestCase):
         self.assertLess(im.tell(), n_frames)
 
         # Test that seeking to the last frame does not raise an error
-        im.seek(n_frames-1)
+        im.seek(n_frames - 1)
 
     def test_seek_tell(self):
         im = Image.open(animated_test_file)
@@ -85,6 +90,9 @@ class TestFileFli(PillowTestCase):
         layer_number = im.tell()
         self.assertEqual(layer_number, 1)
 
+    def test_seek(self):
+        im = Image.open(animated_test_file)
+        im.seek(50)
 
-if __name__ == '__main__':
-    unittest.main()
+        expected = Image.open("Tests/images/a_fli.png")
+        self.assert_image_equal(im, expected)

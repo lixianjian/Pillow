@@ -13,11 +13,25 @@ Warnings
 Notes
 -----
 
-.. note:: Pillow < 2.0.0 supports Python versions 2.4, 2.5, 2.6, 2.7.
+.. note:: Pillow is supported on the following Python versions
 
-.. note:: Pillow >= 2.0.0 < 4.0.0 supports Python versions 2.6, 2.7, 3.2, 3.3, 3.4, 3.5
-
-.. note:: Pillow >= 4.0.0 supports Python versions 2.7, 3.3, 3.4, 3.5, 3.6
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|**Python**           |**2.4**|**2.5**|**2.6**|**2.7**|**3.2**|**3.3**|**3.4**|**3.5**|**3.6**|**3.7**|
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow < 2.0.0       |  Yes  |  Yes  |  Yes  |  Yes  |       |       |       |       |       |       |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow 2.x - 3.x     |       |       |  Yes  |  Yes  |  Yes  |  Yes  |  Yes  |  Yes  |       |       |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow 4.x           |       |       |       |  Yes  |       |  Yes  |  Yes  |  Yes  |  Yes  |       |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow 5.0.x - 5.1.x |       |       |       |  Yes  |       |       |  Yes  |  Yes  |  Yes  |       |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow 5.2.x - 5.4.x |       |       |       |  Yes  |       |       |  Yes  |  Yes  |  Yes  |  Yes  |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow 6.x           |       |       |       |  Yes  |       |       |       |  Yes  |  Yes  |  Yes  |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|Pillow >= 7.0.0      |       |       |       |       |       |       |       |  Yes  |  Yes  |  Yes  |
++---------------------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
 
 Basic Installation
 ------------------
@@ -39,7 +53,7 @@ Windows Installation
 We provide Pillow binaries for Windows compiled for the matrix of
 supported Pythons in both 32 and 64-bit versions in wheel, egg, and
 executable installers. These binaries have all of the optional
-libraries included::
+libraries included except for raqm and libimagequant::
 
   > pip install Pillow
 
@@ -47,9 +61,10 @@ libraries included::
 macOS Installation
 ^^^^^^^^^^^^^^^^^^
 
-We provide binaries for macOS for each of the supported Python versions
-in the wheel format. These include support for all optional libraries
-except OpenJPEG::
+We provide binaries for macOS for each of the supported Python
+versions in the wheel format. These include support for all optional
+libraries except libimagequant.  Raqm support requires libraqm,
+fribidi, and harfbuzz to be installed separately::
 
   $ pip install Pillow
 
@@ -58,7 +73,8 @@ Linux Installation
 
 We provide binaries for Linux for each of the supported Python
 versions in the manylinux wheel format. These include support for all
-optional libraries except Raqm::
+optional libraries except libimagequant. Raqm support requires
+libraqm, fribidi, and harfbuzz to be installed separately::
 
   $ pip install Pillow
 
@@ -84,7 +100,7 @@ Pillow can be installed on FreeBSD via the official Ports or Packages systems:
     The `Pillow FreeBSD port
     <https://www.freshports.org/graphics/py-pillow/>`_ and packages
     are tested by the ports team with all supported FreeBSD versions
-    and against Python 2.x and 3.x.
+    and against Python 2.7 and 3.x.
 
 
 Building From Source
@@ -92,7 +108,7 @@ Building From Source
 
 Download and extract the `compressed archive from PyPI`_.
 
-.. _compressed archive from PyPI: https://pypi.python.org/pypi/Pillow
+.. _compressed archive from PyPI: https://pypi.org/project/Pillow/
 
 .. _external-libraries:
 
@@ -116,8 +132,8 @@ Many of Pillow's features require external libraries:
 
 * **libjpeg** provides JPEG functionality.
 
-  * Pillow has been tested with libjpeg versions **6b**, **8**, **9**, **9a**,
-    and **9b** and libjpeg-turbo version **8**.
+  * Pillow has been tested with libjpeg versions **6b**, **8**, **9-9c** and
+    libjpeg-turbo version **8**.
   * Starting with Pillow 3.0.0, libjpeg is required by default, but
     may be disabled with the ``--disable-jpeg`` flag.
 
@@ -135,7 +151,7 @@ Many of Pillow's features require external libraries:
 * **littlecms** provides color management
 
   * Pillow version 2.2.1 and below uses liblcms1, Pillow 2.3.0 and
-    above uses liblcms2. Tested with **1.19** and **2.7**.
+    above uses liblcms2. Tested with **1.19** and **2.7-2.9**.
 
 * **libwebp** provides the WebP format.
 
@@ -147,18 +163,18 @@ Many of Pillow's features require external libraries:
 
 * **openjpeg** provides JPEG 2000 functionality.
 
-  * Pillow has been tested with openjpeg **2.0.0** and **2.1.0**.
+  * Pillow has been tested with openjpeg **2.0.0**, **2.1.0** and **2.3.1**.
   * Pillow does **not** support the earlier **1.5** series which ships
-    with Ubuntu <= 14.04 and Debian Jessie.
+    with Debian Jessie.
 
 * **libimagequant** provides improved color quantization
 
-  * Pillow has been tested with libimagequant **2.11.3**
+  * Pillow has been tested with libimagequant **2.6-2.12.3**
   * Libimagequant is licensed GPLv3, which is more restrictive than
     the Pillow license, therefore we will not be distributing binaries
     with libimagequant support enabled.
-  * Windows support: Libimagequant requires VS2013/MSVC 18 to compile,
-    so it is unlikely to work with any Python prior to 3.5 on Windows.
+  * Windows support: Libimagequant requires VS2015/MSVC 19 to compile,
+    so it is unlikely to work with Python 2.7 on Windows.
 
 * **libraqm** provides complex text layout support.
 
@@ -166,10 +182,12 @@ Many of Pillow's features require external libraries:
     shaping (using HarfBuzz), and proper script itemization. As a
     result, Raqm can support most writing systems covered by Unicode.
   * libraqm depends on the following libraries: FreeType, HarfBuzz,
-    FriBiDi, make sure that you install them before install libraqm
+    FriBiDi, make sure that you install them before installing libraqm
     if not available as package in your system.
   * setting text direction or font features is not supported without
     libraqm.
+  * libraqm is dynamically loaded in Pillow 5.0.0 and above, so support
+    is available if all the libraries are installed.
   * Windows support: Raqm support is currently unsupported on Windows.
 
 Once you have installed the prerequisites, run::
@@ -195,24 +213,23 @@ build with newly installed external libraries.
 Build Options
 ^^^^^^^^^^^^^
 
-* Environment variable: ``MAX_CONCURRENCY=n``. By default, Pillow will
-  use multiprocessing to build the extension on all available CPUs,
-  but not more than 4. Setting ``MAX_CONCURRENCY`` to 1 will disable
-  parallel building.
+* Environment variable: ``MAX_CONCURRENCY=n``. Pillow can use
+  multiprocessing to build the extension. Setting ``MAX_CONCURRENCY``
+  sets the number of CPUs to use, or can disable parallel building by
+  using a setting of 1. By default, it uses 4 CPUs, or if 4 are not
+  available, as many as are present.
 
 * Build flags: ``--disable-zlib``, ``--disable-jpeg``,
-  ``--disable-tiff``, ``--disable-freetype``, ``--disable-tcl``,
-  ``--disable-tk``, ``--disable-lcms``, ``--disable-webp``,
-  ``--disable-webpmux``, ``--disable-jpeg2000``,
-  ``--disable-imagequant``, ``--disable-raqm``.
+  ``--disable-tiff``, ``--disable-freetype``, ``--disable-lcms``,
+  ``--disable-webp``, ``--disable-webpmux``, ``--disable-jpeg2000``,
+  ``--disable-imagequant``.
   Disable building the corresponding feature even if the development
   libraries are present on the building machine.
 
 * Build flags: ``--enable-zlib``, ``--enable-jpeg``,
-  ``--enable-tiff``, ``--enable-freetype``, ``--enable-tcl``,
-  ``--enable-tk``, ``--enable-lcms``, ``--enable-webp``,
-  ``--enable-webpmux``, ``--enable-jpeg2000``,
-  ``--enable-imagequant``,  ``--enable-raqm``.
+  ``--enable-tiff``, ``--enable-freetype``, ``--enable-lcms``,
+  ``--enable-webp``, ``--enable-webpmux``, ``--enable-jpeg2000``,
+  ``--enable-imagequant``.
   Require that the corresponding feature is built. The build will raise
   an exception if the libraries are not found. Webpmux (WebP metadata)
   relies on WebP support. Tcl and Tk also must be used together.
@@ -316,18 +333,22 @@ Or for Python 3::
 
 .. Note:: ``redhat-rpm-config`` is required on Fedora 23, but not earlier versions.
 
-Prerequisites are installed on **Ubuntu 14.04 LTS** with::
+Prerequisites are installed on **Ubuntu 16.04 LTS** with::
 
-    $ sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev \
-        libfreetype6-dev liblcms2-dev libwebp-dev libharfbuzz-dev libfribidi-dev \
-        tcl8.6-dev tk8.6-dev python-tk
+    $ sudo apt-get install libtiff5-dev libjpeg8-dev libopenjp2-7-dev zlib1g-dev \
+        libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk \
+        libharfbuzz-dev libfribidi-dev
 
 Then see ``depends/install_raqm.sh`` to install libraqm.
 
-Prerequisites are installed on **Fedora 23** with::
+Prerequisites are installed on recent **RedHat** **Centos** or **Fedora** with::
 
-    $ sudo dnf install libtiff-devel libjpeg-devel zlib-devel freetype-devel \
-        lcms2-devel libwebp-devel tcl-devel tk-devel libraqm-devel
+    $ sudo dnf install libtiff-devel libjpeg-devel openjpeg2-devel zlib-devel \
+        freetype-devel lcms2-devel libwebp-devel tcl-devel tk-devel \
+        harfbuzz-devel fribidi-devel libraqm-devel libimagequant-devel
+
+Note that the package manager may be yum or dnf, depending on the
+exact distribution.
 
 See also the ``Dockerfile``\s in the Test Infrastructure repo
 (https://github.com/python-pillow/docker-images) for a known working
@@ -362,37 +383,37 @@ These platforms are built and tested for every change.
 +----------------------------------+-------------------------------+-----------------------+
 |**Operating system**              |**Tested Python versions**     |**Tested Architecture**|
 +----------------------------------+-------------------------------+-----------------------+
-| Alpine                           | 2.7                           |x86-64                 |
+| Alpine                           | 2.7, 3.7                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Arch                             | 2.7                           |x86-64                 |
+| Arch                             | 2.7, 3.7                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Amazon                           | 2.7                           |x86-64                 |
+| Amazon Linux 1                   | 2.7, 3.6                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Centos 6                         | 2.7                           |x86-64                 |
+| Amazon Linux 2                   | 2.7, 3.6                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Centos 7                         | 2.7                           |x86-64                 |
+| CentOS 6                         | 2.7, 3.6                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Debian Stretch                   | 2.7                           |x86                    |
+| CentOS 7                         | 2.7, 3.6                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Fedora 25                        | 2.7                           |x86-64                 |
+| Debian 9 Stretch                 | 2.7, 3.5                      |x86                    |
 +----------------------------------+-------------------------------+-----------------------+
-| Fedora 26                        | 2.7                           |x86-64                 |
+| Debian 10 Buster                 | 2.7, 3.7                      |x86                    |
 +----------------------------------+-------------------------------+-----------------------+
-| Mac OS X 10.10 Yosemite*         | 2.7, 3.3, 3.4, 3.5, 3.6       |x86-64                 |
+| Fedora 29                        | 2.7, 3.7                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Ubuntu Linux 16.04 LTS           | 2.7                           |x86-64                 |
+| Fedora 30                        | 2.7, 3.7                      |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Ubuntu Linux 14.04 LTS           | 2.7, 3.3, 3.4, 3.5, 3.6,      |x86-64                 |
-|                                  | pypy, pypy3                   |                       |
-|                                  |                               |                       |
-|                                  | 2.7                           |x86                    |
+| macOS 10.13 High Sierra*         | 2.7, 3.5, 3.6, 3.7            |x86-64                 |
 +----------------------------------+-------------------------------+-----------------------+
-| Windows Server 2012 R2           | 2.7, 3.3, 3.4                 |x86, x86-64            |
-|                                  |                               |                       |
-|                                  | pypy, 3.5/mingw               |x86                    |
+| Ubuntu Linux 16.04 LTS           | 2.7, 3.5, 3.6, 3.7,           |x86-64                 |
+|                                  | PyPy, PyPy3                   |                       |
++----------------------------------+-------------------------------+-----------------------+
+| Windows Server 2012 R2           | 2.7, 3.5, 3.6, 3.7            |x86, x86-64            |
+|                                  +-------------------------------+-----------------------+
+|                                  | PyPy, 3.7/MinGW               |x86                    |
 +----------------------------------+-------------------------------+-----------------------+
 
-\* Mac OS X CI is not run for every commit, but is run for every release.
+\* macOS CI is not run for every commit, but is run for every release.
 
 Other Platforms
 ^^^^^^^^^^^^^^^
@@ -407,11 +428,17 @@ These platforms have been reported to work at the versions mentioned.
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 |**Operating system**              |**Tested Python versions**    |**Latest tested Pillow version**|**Tested processors**  |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
+| macOS 10.14 Mojave               | 2.7, 3.5, 3.6, 3.7           | 6.0.0                          |x86-64                 |
+|                                  +------------------------------+--------------------------------+                       +
+|                                  | 3.4                          | 5.4.1                          |                       |
++----------------------------------+------------------------------+--------------------------------+-----------------------+
 | macOS 10.13 High Sierra          | 2.7, 3.4, 3.5, 3.6           | 4.2.1                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | macOS 10.12 Sierra               | 2.7, 3.4, 3.5, 3.6           | 4.1.1                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
-| Mac OS X 10.11 El Capitan        | 2.7, 3.3, 3.4, 3.5           | 4.1.0                          |x86-64                 |
+| Mac OS X 10.11 El Capitan        | 2.7, 3.4, 3.5, 3.6, 3.7      | 5.4.1                          |x86-64                 |
+|                                  +------------------------------+--------------------------------+                       +
+|                                  | 3.3                          | 4.1.0                          |                       |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | Mac OS X 10.9 Mavericks          | 2.7, 3.2, 3.3, 3.4           | 3.0.0                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
@@ -425,20 +452,22 @@ These platforms have been reported to work at the versions mentioned.
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | Ubuntu Linux 12.04 LTS           | 2.6, 3.2, 3.3, 3.4, 3.5      | 3.4.1                          |x86,x86-64             |
 |                                  | PyPy5.3.1, PyPy3 v2.4.0      |                                |                       |
-|                                  |                              |                                |                       |
+|                                  +------------------------------+--------------------------------+-----------------------+
 |                                  | 2.7                          | 4.3.0                          |x86-64                 |
-|                                  |                              |                                |                       |
+|                                  +------------------------------+--------------------------------+-----------------------+
 |                                  | 2.7, 3.2                     | 3.4.1                          |ppc                    |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | Ubuntu Linux 10.04 LTS           | 2.6                          | 2.3.0                          |x86,x86-64             |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | Debian 8.2 Jessie                | 2.7, 3.4                     | 3.1.0                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
-| Raspian Jessie                   | 2.7, 3.4                     | 3.1.0                          |arm                    |
+| Raspbian Jessie                  | 2.7, 3.4                     | 3.1.0                          |arm                    |
++----------------------------------+------------------------------+--------------------------------+-----------------------+
+| Raspbian Stretch                 | 2.7, 3.5                     | 4.0.0                          |arm                    |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | Gentoo Linux                     | 2.7, 3.2                     | 2.1.0                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
-| FreeBSD 11.0                     | 2.7, 3.4, 3.5, 3.6           | 4.2.0                          |x86-64                 |
+| FreeBSD 11.1                     | 2.7, 3.4, 3.5, 3.6           | 4.3.0                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
 | FreeBSD 10.3                     | 2.7, 3.4, 3.5                | 4.2.0                          |x86-64                 |
 +----------------------------------+------------------------------+--------------------------------+-----------------------+
@@ -456,8 +485,6 @@ These platforms have been reported to work at the versions mentioned.
 Old Versions
 ------------
 
-You can download old distributions from `PyPI
-<https://pypi.python.org/pypi/Pillow>`_. Only the latest major
-releases for Python 2.x and 3.x are visible, but all releases are
-available by direct URL access
-e.g. https://pypi.python.org/pypi/Pillow/1.0.
+You can download old distributions from the `release history at PyPI
+<https://pypi.org/project/Pillow/#history>`_ and by direct URL access
+eg. https://pypi.org/project/Pillow/1.0/.

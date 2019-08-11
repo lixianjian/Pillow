@@ -1,15 +1,13 @@
-from helper import unittest, PillowTestCase
-
 from PIL import Image, McIdasImagePlugin
+
+from .helper import PillowTestCase
 
 
 class TestFileMcIdas(PillowTestCase):
-
     def test_invalid_file(self):
         invalid_file = "Tests/images/flower.jpg"
 
-        self.assertRaises(SyntaxError,
-                          McIdasImagePlugin.McIdasImageFile, invalid_file)
+        self.assertRaises(SyntaxError, McIdasImagePlugin.McIdasImageFile, invalid_file)
 
     def test_valid_file(self):
         # Arrange
@@ -28,7 +26,3 @@ class TestFileMcIdas(PillowTestCase):
         self.assertEqual(im.size, (1800, 400))
         im2 = Image.open(saved_file)
         self.assert_image_equal(im, im2)
-
-
-if __name__ == '__main__':
-    unittest.main()

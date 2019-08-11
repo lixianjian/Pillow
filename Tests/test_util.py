@@ -1,10 +1,9 @@
-from helper import unittest, PillowTestCase
-
 from PIL import _util
+
+from .helper import PillowTestCase, unittest
 
 
 class TestUtil(PillowTestCase):
-
     def test_is_string_type(self):
         # Arrange
         color = "red"
@@ -30,7 +29,20 @@ class TestUtil(PillowTestCase):
         fp = "filename.ext"
 
         # Act
-        it_is = _util.isStringType(fp)
+        it_is = _util.isPath(fp)
+
+        # Assert
+        self.assertTrue(it_is)
+
+    @unittest.skipIf(not _util.py36, "os.path support for Paths added in 3.6")
+    def test_path_obj_is_path(self):
+        # Arrange
+        from pathlib import Path
+
+        test_path = Path("filename.ext")
+
+        # Act
+        it_is = _util.isPath(test_path)
 
         # Assert
         self.assertTrue(it_is)
@@ -38,7 +50,7 @@ class TestUtil(PillowTestCase):
     def test_is_not_path(self):
         # Arrange
         filename = self.tempfile("temp.ext")
-        fp = open(filename, 'w').close()
+        fp = open(filename, "w").close()
 
         # Act
         it_is_not = _util.isPath(fp)
@@ -74,6 +86,3 @@ class TestUtil(PillowTestCase):
 
         # Assert
         self.assertRaises(ValueError, lambda: thing.some_attr)
-
-if __name__ == '__main__':
-    unittest.main()

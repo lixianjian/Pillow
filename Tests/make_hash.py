@@ -4,21 +4,33 @@ from __future__ import print_function
 
 modes = [
     "1",
-    "L", "LA", "La",
-    "I", "I;16", "I;16L", "I;16B", "I;32L", "I;32B",
+    "L",
+    "LA",
+    "La",
+    "I",
+    "I;16",
+    "I;16L",
+    "I;16B",
+    "I;32L",
+    "I;32B",
     "F",
-    "P", "PA",
-    "RGB", "RGBA", "RGBa", "RGBX",
+    "P",
+    "PA",
+    "RGB",
+    "RGBA",
+    "RGBa",
+    "RGBX",
     "CMYK",
     "YCbCr",
-    "LAB", "HSV",
-    ]
+    "LAB",
+    "HSV",
+]
 
 
 def hash(s, i):
     # djb2 hash: multiply by 33 and xor character
     for c in s:
-        i = (((i << 5) + i) ^ ord(c)) & 0xffffffff
+        i = (((i << 5) + i) ^ ord(c)) & 0xFFFFFFFF
     return i
 
 
@@ -31,6 +43,7 @@ def check(size, i0):
             return 0
         h[i] = m
     return h
+
 
 min_start = 0
 
@@ -51,10 +64,5 @@ for i0 in range(65556):
 
 print()
 
-# print(check(min_size, min_start))
-
 print("#define ACCESS_TABLE_SIZE", min_size)
 print("#define ACCESS_TABLE_HASH", min_start)
-
-# for m in modes:
-#     print(m, "=>", hash(m, min_start) % min_size)

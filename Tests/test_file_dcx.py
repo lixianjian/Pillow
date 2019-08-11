@@ -1,13 +1,12 @@
-from helper import unittest, PillowTestCase, hopper
+from PIL import DcxImagePlugin, Image
 
-from PIL import Image, DcxImagePlugin
+from .helper import PillowTestCase, hopper
 
 # Created with ImageMagick: convert hopper.ppm hopper.dcx
 TEST_FILE = "Tests/images/hopper.dcx"
 
 
 class TestFileDcx(PillowTestCase):
-
     def test_sanity(self):
         # Arrange
 
@@ -20,10 +19,16 @@ class TestFileDcx(PillowTestCase):
         orig = hopper()
         self.assert_image_equal(im, orig)
 
+    def test_unclosed_file(self):
+        def open():
+            im = Image.open(TEST_FILE)
+            im.load()
+
+        self.assert_warning(None, open)
+
     def test_invalid_file(self):
         with open("Tests/images/flower.jpg", "rb") as fp:
-            self.assertRaises(SyntaxError,
-                              DcxImagePlugin.DcxImageFile, fp)
+            self.assertRaises(SyntaxError, DcxImagePlugin.DcxImageFile, fp)
 
     def test_tell(self):
         # Arrange
@@ -49,7 +54,7 @@ class TestFileDcx(PillowTestCase):
         self.assertLess(im.tell(), n_frames)
 
         # Test that seeking to the last frame does not raise an error
-        im.seek(n_frames-1)
+        im.seek(n_frames - 1)
 
     def test_seek_too_far(self):
         # Arrange
@@ -58,7 +63,3 @@ class TestFileDcx(PillowTestCase):
 
         # Act / Assert
         self.assertRaises(EOFError, im.seek, frame)
-
-
-if __name__ == '__main__':
-    unittest.main()

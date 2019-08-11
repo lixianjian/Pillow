@@ -1,10 +1,9 @@
-from helper import unittest, PillowTestCase, hopper
-
 from PIL import Image
+
+from .helper import PillowTestCase, hopper
 
 
 class TestImageGetProjection(PillowTestCase):
-
     def test_sanity(self):
 
         im = hopper()
@@ -30,7 +29,3 @@ class TestImageGetProjection(PillowTestCase):
         im.paste(255, (2, 4, 8, 6))
         self.assertEqual(im.getprojection()[0], [0, 0, 1, 1, 1, 1, 1, 1, 0, 0])
         self.assertEqual(im.getprojection()[1], [0, 0, 0, 0, 1, 1, 0, 0, 0, 0])
-
-
-if __name__ == '__main__':
-    unittest.main()

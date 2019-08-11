@@ -1,7 +1,8 @@
-import helper
+import sys
 import timeit
 
-import sys
+from . import helper
+
 sys.path.insert(0, ".")
 
 
@@ -13,6 +14,7 @@ def bench(mode):
     for _ in range(1000000):
         get(xy)
     print(mode, timeit.default_timer() - t0, "us")
+
 
 bench("L")
 bench("I")

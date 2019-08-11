@@ -1,12 +1,11 @@
-from helper import unittest, PillowTestCase
+from PIL import CurImagePlugin, Image
 
-from PIL import Image, CurImagePlugin
+from .helper import PillowTestCase
 
 TEST_FILE = "Tests/images/deerstalker.cur"
 
 
 class TestFileCur(PillowTestCase):
-
     def test_sanity(self):
         im = Image.open(TEST_FILE)
 
@@ -20,15 +19,11 @@ class TestFileCur(PillowTestCase):
     def test_invalid_file(self):
         invalid_file = "Tests/images/flower.jpg"
 
-        self.assertRaises(SyntaxError,
-                          CurImagePlugin.CurImageFile, invalid_file)
+        self.assertRaises(SyntaxError, CurImagePlugin.CurImageFile, invalid_file)
 
         no_cursors_file = "Tests/images/no_cursors.cur"
 
         cur = CurImagePlugin.CurImageFile(TEST_FILE)
+        cur.fp.close()
         with open(no_cursors_file, "rb") as cur.fp:
             self.assertRaises(TypeError, cur._open)
-
-
-if __name__ == '__main__':
-    unittest.main()
